@@ -37,7 +37,7 @@ sub call {
                 my $buf = '';
                 while (length($data) >= $int) {
                     $buf .= substr $data, 0, $int, '';
-                    my $meta = qq(StreamTitle='$env->{'icy.status'}->{title}');
+                    my $meta = qq(StreamTitle='$env->{'icy.status'}->{title}';);
                     my $len = ceil(length($meta) / 16);
                     $buf .= chr($len) . $meta . ("\x00" x (16 * $len - length $meta));
                     $int = $interval;

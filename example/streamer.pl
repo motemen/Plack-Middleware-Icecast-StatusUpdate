@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+use lib 'lib';
 use Plack::Builder;
 use Plack::Request;
 use AnyEvent;
@@ -21,9 +22,9 @@ my $app = sub {
         my $respond = shift;
         my $writer = $respond->([ 200, [ 'Content-Type' => 'audio/mpeg' ] ]);
 
-        my $index = 0;
         my $next; $next = sub {
             my $file = shift @files or return $writer->close;
+            warn "$file\n";
 
             my $info = MP3::Info->new($file);
             $env->{'icy.status'}->{title} = $info && $info->title || '(unknown)';
@@ -48,7 +49,8 @@ my $app = sub {
     };
 };
 
-Plack::Loader->load('AnyEvent::HTTPD')->run(
+use Plack::Loader;
+Plack::Loader->load('AnyEvent::HTTPD', port => 5000)->run(
     builder {
         enable 'Plack::Middleware::Icecast::StatusUpdate';
         $app;
