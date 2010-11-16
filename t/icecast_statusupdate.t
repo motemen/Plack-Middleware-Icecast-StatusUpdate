@@ -29,7 +29,7 @@ my $test = sub {
 
 {
     my $res = $test->('foobar')->(GET '/', ICY_Metadata => 1);
-    is $res->content, ('x' x 16) . "\x02" . q(StreamTitle='foobar') . ("\0" x 12) . ('x' x 4);
+    is $res->content, ('x' x 16) . "\x02" . q(StreamTitle='foobar';) . ("\0" x 11) . ('x' x 4);
 }
 
 done_testing;
